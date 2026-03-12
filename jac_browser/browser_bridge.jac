@@ -562,6 +562,22 @@ def _do_set_dialog_handler(args: list) -> object {
     response = args[1];
     prompt_text = args[2];
 
+    # Remove old dialog handler if one exists
+    old_handler = _state.get("dialog_handler");
+    if old_handler {
+        try {
+            page.remove_listener("dialog", old_handler);
+        } except Exception {}
+    }
+    # Also remove old confirm handler to avoid conflicts
+    old_confirm = _state.get("confirm_handler");
+    if old_confirm {
+        try {
+            page.remove_listener("dialog", old_confirm);
+        } except Exception {}
+        _state["confirm_handler"] = None;
+    }
+
     def _handle_dialog(dialog: object) -> None {
         if response == "accept" {
             if prompt_text {
@@ -1199,6 +1215,22 @@ def _do_set_confirm_handler(args: list) -> object {
     page = args[0];
     accept = args[1];
 
+    # Remove old confirm handler if one exists
+    old_confirm = _state.get("confirm_handler");
+    if old_confirm {
+        try {
+            page.remove_listener("dialog", old_confirm);
+        } except Exception {}
+    }
+    # Also remove old dialog handler to avoid conflicts
+    old_handler = _state.get("dialog_handler");
+    if old_handler {
+        try {
+            page.remove_listener("dialog", old_handler);
+        } except Exception {}
+        _state["dialog_handler"] = None;
+    }
+
     def _handle(dialog: object) -> None {
         if dialog.type == "confirm" {
             if accept {
@@ -1212,6 +1244,7 @@ def _do_set_confirm_handler(args: list) -> object {
     }
 
     page.on("dialog", _handle);
+    _state["confirm_handler"] = _handle;
     return None;
 }
 

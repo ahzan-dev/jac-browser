@@ -26,8 +26,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/AhzanAhmed/jac-browser"
-Issues = "https://github.com/AhzanAhmed/jac-browser/issues"
+Homepage = "https://github.com/ahzan-dev/jac-browser"
+Issues = "https://github.com/ahzan-dev/jac-browser/issues"
 
 [tool.setuptools.packages.find]
 include = ["jac_browser*"]

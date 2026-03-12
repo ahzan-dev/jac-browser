@@ -539,6 +539,40 @@ curl -X POST localhost:8000/walker/screenshot -H 'Content-Type: application/json
 curl -X POST localhost:8000/walker/close_browser -H 'Content-Type: application/json' -d '{}'
 ```
 
+## Examples
+
+The `examples/` directory contains 25 complete Jac applications covering every use case:
+
+```bash
+jac run examples/01_hello_browser.jac      # Basic launch, navigate, snapshot
+jac run examples/02_form_automation.jac     # Fill forms, checkboxes, dropdowns
+jac run examples/03_web_scraping.jac        # Extract text, HTML, attributes
+jac run examples/04_screenshot_pdf.jac      # Screenshots and PDF generation
+jac run examples/05_multi_tab.jac           # Tab management
+jac run examples/06_keyboard_mouse.jac      # Low-level input control
+jac run examples/07_network_intercept.jac   # Block, mock, log requests
+jac run examples/08_state_management.jac    # Save/load cookies and storage
+jac run examples/09_semantic_locators.jac   # Find elements by role, text, label
+jac run examples/10_device_emulation.jac    # Mobile, geolocation, timezone
+jac run examples/11_dialog_handling.jac     # Alert, confirm, prompt dialogs
+jac run examples/12_file_upload_download.jac # Upload and download files
+jac run examples/13_iframe_frames.jac       # Work with iframes
+jac run examples/14_tracing_recording.jac   # Playwright traces, HAR, recording
+jac run examples/15_visual_diff.jac         # Compare screenshots and snapshots
+jac run examples/16_console_errors.jac      # Monitor console and JS errors
+jac run examples/17_auth_vault.jac          # Save and manage auth profiles
+jac run examples/18_script_injection.jac    # Inject JavaScript and CSS
+jac run examples/19_advanced_elements.jac   # Highlight, nth, multi-select
+jac run examples/20_ai_agent_loop.jac       # AI agent snapshot-ref cycle
+jac run examples/21_page_config.jac         # Viewport, offline, media emulation
+jac run examples/22_clipboard_touch.jac     # Clipboard, touch, drag, swipe
+jac run examples/23_advanced_js.jac         # eval_handle, expose, wait functions
+jac run examples/24_profiler_screencast.jac # Performance profiling
+jac serve examples/25_rest_api_server.jac   # REST API server (all 145 walkers)
+```
+
+See [`examples/README.md`](examples/README.md) for the full walker coverage table.
+
 ## Testing
 
 ```bash
@@ -563,6 +597,7 @@ jac-browser/
     walkers.jac            # 145 walker definitions
     helpers.jac            # Shared helper functions
     nodes.jac              # Graph node types
+  examples/                # 25 example applications
   tests/
     test_page.html         # HTML fixture for integration tests
   browser_test.jac         # Integration test suite
