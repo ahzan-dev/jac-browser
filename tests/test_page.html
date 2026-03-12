@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jac-browser Test Page</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        #output { color: green; font-weight: bold; }
+        .hidden-el { display: none; }
+        #drag-source { width: 80px; height: 40px; background: #4af; cursor: grab; padding: 5px; }
+        #drop-target { width: 120px; height: 60px; background: #eee; border: 2px dashed #999; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1 id="main-heading">Test Page</h1>
+    <p id="description">This page is used for jac-browser integration tests.</p>
+
+    <!-- Navigation links -->
+    <div class="section" id="nav-section">
+        <h2>Navigation</h2>
+        <a href="#page2" id="link-page2">Go to page 2</a>
+        <a href="#home" id="link-home">Go home</a>
+    </div>
+
+    <!-- Text inputs -->
+    <div class="section" id="input-section">
+        <h2>Inputs</h2>
+        <label for="text-input">Text input:</label>
+        <input type="text" id="text-input" name="text-input" placeholder="Type here">
+        <br><br>
+        <label for="email-input">Email:</label>
+        <input type="email" id="email-input" name="email-input" placeholder="email@example.com">
+    </div>
+
+    <!-- Checkboxes and radios -->
+    <div class="section" id="check-section">
+        <h2>Checkboxes and Radios</h2>
+        <label><input type="checkbox" id="check1" name="check1"> Option A</label>
+        <label><input type="checkbox" id="check2" name="check2" checked> Option B</label>
+        <br>
+        <label><input type="radio" name="radio-group" id="radio1" value="x"> Choice X</label>
+        <label><input type="radio" name="radio-group" id="radio2" value="y"> Choice Y</label>
+    </div>
+
+    <!-- Dropdown -->
+    <div class="section" id="select-section">
+        <h2>Dropdown</h2>
+        <label for="color-select">Color:</label>
+        <select id="color-select" name="color-select">
+            <option value="">-- choose --</option>
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+        </select>
+    </div>
+
+    <!-- Buttons -->
+    <div class="section" id="button-section">
+        <h2>Buttons</h2>
+        <button id="btn-click" onclick="document.getElementById('output').textContent = 'clicked'">Click me</button>
+        <button id="btn-dblclick" ondblclick="document.getElementById('output').textContent = 'dblclicked'">Double-click me</button>
+        <button id="btn-disabled" disabled>Disabled button</button>
+        <button id="btn-alert" onclick="alert('test-alert')">Alert</button>
+        <button id="btn-console" onclick="console.log('test-log-msg')">Console Log</button>
+        <button id="btn-error" onclick="throw new Error('test-page-error')">Throw Error</button>
+        <button id="btn-storage" onclick="localStorage.setItem('btn-test', 'btn-val')">Set Storage</button>
+        <p id="output"></p>
+    </div>
+
+    <!-- File upload -->
+    <div class="section" id="file-section">
+        <h2>File Upload</h2>
+        <input type="file" id="file-upload" name="file-upload">
+    </div>
+
+    <!-- Drag and drop -->
+    <div class="section" id="drag-section">
+        <h2>Drag and Drop</h2>
+        <div id="drag-source" draggable="true">Drag me</div>
+        <div id="drop-target">Drop here</div>
+    </div>
+
+    <!-- Hidden element for visibility tests -->
+    <div class="hidden-el" id="hidden-div">I am hidden</div>
+    <div id="visible-div">I am visible</div>
+
+    <!-- Data attributes for get_attribute tests -->
+    <div id="data-el" data-testid="abc123" data-value="42">Data element</div>
+
+    <!-- Inner HTML test -->
+    <div id="html-el"><strong>bold</strong> and <em>italic</em></div>
+
+    <!-- Iframe for frame tests -->
+    <div class="section" id="frame-section">
+        <h2>Iframe</h2>
+        <iframe id="test-iframe" srcdoc="<html><body><h1 id='frame-heading'>Frame Content</h1><button id='frame-btn'>Frame Button</button></body></html>" width="300" height="100"></iframe>
+    </div>
+
+    <!-- Semantic locator targets -->
+    <div class="section" id="semantic-section">
+        <h2>Semantic Locators</h2>
+        <label for="labeled-input">Labeled Field:</label>
+        <input type="text" id="labeled-input" placeholder="Enter value" title="Input with title">
+        <img src="" alt="Test Image Alt" id="alt-img" width="1" height="1">
+        <div data-testid="semantic-test-el">Test ID Element</div>
+        <button id="btn-semantic">Semantic Button</button>
+    </div>
+
+    <!-- Multi-select for multi_select tests -->
+    <div class="section" id="multi-section">
+        <h2>Multi Select</h2>
+        <select id="multi-select" multiple>
+            <option value="apple">Apple</option>
+            <option value="banana">Banana</option>
+            <option value="cherry">Cherry</option>
+        </select>
+    </div>
+
+    <!-- List items for nth tests -->
+    <div class="section" id="list-section">
+        <h2>List Items</h2>
+        <ul>
+            <li class="list-item">Item One</li>
+            <li class="list-item">Item Two</li>
+            <li class="list-item">Item Three</li>
+        </ul>
+    </div>
+
+    <!-- Confirm dialog test -->
+    <div class="section" id="confirm-section">
+        <h2>Confirm Dialog</h2>
+        <button id="btn-confirm" onclick="document.getElementById('confirm-output').textContent = window.confirm('Are you sure?') ? 'confirmed' : 'denied'">Show Confirm</button>
+        <p id="confirm-output"></p>
+    </div>
+
+    <!-- Element below fold for scroll_into_view -->
+    <div style="margin-top: 2000px;" id="below-fold">Below the fold</div>
+
+    <script>
+        // For evaluate tests
+        window.testValue = 100;
+
+        // Drag and drop handlers
+        document.getElementById('drag-source').addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', 'dragged');
+        });
+        document.getElementById('drop-target').addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+        document.getElementById('drop-target').addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.target.textContent = 'Dropped!';
+        });
+    </script>
+</body>
+</html>

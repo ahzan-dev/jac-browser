@@ -1,0 +1,7 @@
+[project]
+name = "jac-browser"
+version = "0.1.0"
+entry-point = "main.jac"
+
+[dependencies.python]
+playwright = ">=1.40.0"

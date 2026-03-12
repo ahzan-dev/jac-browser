@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jac-browser"
+version = "0.1.0"
+description = "Headless browser automation for Jac - 145 walkers wrapping Playwright"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "jaclang>=0.6.1",
+    "playwright>=1.40.0",
+]
+keywords = ["jac", "jaclang", "browser", "automation", "playwright", "headless"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+]
+
+[project.urls]
+Homepage = "https://github.com/AhzanAhmed/jac-browser"
+Issues = "https://github.com/AhzanAhmed/jac-browser/issues"
+
+[tool.setuptools.packages.find]
+include = ["jac_browser*"]
+
+[tool.setuptools.package-data]
+jac_browser = ["*.jac"]
