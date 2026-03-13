@@ -192,7 +192,19 @@ import from jac_browser.walkers {
     auth_login
 }
 
+# Phase 5: Composite walkers (8) - multi-step automation patterns
+import from jac_browser.composites {
+    login,
+    fill_form,
+    scrape,
+    paginate,
+    smart_click,
+    crawl,
+    retry,
+    observe
+}
+
 
 with entry {
-    print("jac-browser: Ready. 145 walkers loaded.");
+    print("jac-browser: Ready. 153 walkers loaded (145 primitive + 8 composite).");
 }

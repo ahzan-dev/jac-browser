@@ -408,6 +408,61 @@ All walkers are public (`:pub`) and report JSON results with `{"success": true/f
 | `auth_delete` | `name: str` | Delete auth profile |
 | `auth_login` | `name: str` | Apply saved auth credentials to browser |
 
+## Composite Walkers (8)
+
+Multi-step automation patterns unique to jac-browser. These combine multiple primitive operations into single, higher-level walkers.
+
+| Walker | Fields | Description |
+|--------|--------|-------------|
+| `login` | `url, username_selector, password_selector, username, password, submit_selector, save_state_path` | Navigate to login page, fill credentials, submit, optionally save state |
+| `fill_form` | `fields: dict, checks: list, selects: dict, submit_selector` | Fill multiple form fields, check boxes, select dropdowns in one call |
+| `scrape` | `url, extract_script, wait_selector, include_screenshot` | Navigate, wait, extract data via JS, optionally screenshot |
+| `paginate` | `url, extract_script, next_selector, max_pages, wait_state` | Extract data across multiple pages by clicking "next" |
+| `smart_click` | `text, role, index` | Find element by text/role from snapshot, click it (no selector needed) |
+| `crawl` | `url, link_pattern, extract_script, max_pages, max_depth` | Follow links matching a regex, extract data from each page |
+| `retry` | `script, retries, delay_ms` | Evaluate JS expression with retries until it returns truthy |
+| `observe` | `include_screenshot, include_html` | Combined snapshot + screenshot + metadata in one call |
+
+### Composite Walker Examples
+
+```jac
+import from jac_browser.composites {login, scrape, paginate, smart_click, observe}
+
+with entry {
+    root spawn launch(headless=True);
+
+    # Login in one call
+    root spawn login(
+        url="https://example.com/login",
+        username="user", password="pass",
+        save_state_path="/tmp/auth.json"
+    );
+
+    # Click by text, not CSS selector
+    root spawn smart_click(text="Dashboard", role="link");
+
+    # Scrape structured data
+    w = root spawn scrape(
+        url="https://example.com/data",
+        extract_script="Array.from(document.querySelectorAll('tr')).map(r => r.textContent)"
+    );
+
+    # Paginate automatically
+    w = root spawn paginate(
+        url="https://example.com/list",
+        extract_script="Array.from(document.querySelectorAll('.item')).map(e => e.textContent)",
+        next_selector=".next-page",
+        max_pages=5
+    );
+
+    # Full page observation for AI agents
+    w = root spawn observe(include_screenshot=True);
+    print(w.reports[0]["snapshot"]);
+
+    root spawn close_browser();
+}
+```
+
 ## Usage Patterns
 
 ### AI Agent Loop (Snapshot-Ref Cycle)
@@ -541,7 +596,7 @@ curl -X POST localhost:8000/walker/close_browser -H 'Content-Type: application/j
 
 ## Examples
 
-The `examples/` directory contains 25 complete Jac applications covering every use case:
+The `examples/` directory contains 31 complete Jac applications covering every use case:
 
 ```bash
 jac run examples/01_hello_browser.jac      # Basic launch, navigate, snapshot
@@ -569,9 +624,27 @@ jac run examples/22_clipboard_touch.jac     # Clipboard, touch, drag, swipe
 jac run examples/23_advanced_js.jac         # eval_handle, expose, wait functions
 jac run examples/24_profiler_screencast.jac # Performance profiling
 jac serve examples/25_rest_api_server.jac   # REST API server (all 145 walkers)
+jac run examples/26_headed_mode.jac         # Visible browser for debugging
+jac run examples/27_session_persistence.jac # Save/load login state across runs
+jac run examples/28_real_world_scraper.jac  # Multi-page scraping with pagination
+jac run examples/29_multi_step_form.jac     # Multi-step form wizard
+jac run examples/30_visual_regression.jac   # Visual regression testing
+jac run examples/31_composite_walkers.jac  # Multi-step composite walkers
 ```
 
 See [`examples/README.md`](examples/README.md) for the full walker coverage table.
+
+## Documentation
+
+Detailed guides are in the [`docs/`](docs/) directory:
+
+- [Getting Started](docs/getting-started.md) -- Installation, first program, core concepts
+- [Tutorials](docs/tutorials.md) -- 10 step-by-step guides (scraping, forms, screenshots, state, tabs, headed mode, AI agent loop, network interception, device emulation, visual regression)
+- [Composite Walkers](docs/composite-walkers.md) -- 8 multi-step walkers unique to jac-browser (login, scrape, paginate, crawl, etc.)
+- [Jac Syntax Guide](docs/jac-syntax-guide.md) -- Jac language patterns and common gotchas
+- [REST API Reference](docs/api-reference.md) -- Using jac-browser as an HTTP API with `jac serve`
+- [Architecture](docs/architecture.md) -- How jac-browser works (session graph, thread-safe bridge, ARIA snapshots)
+- [Troubleshooting](docs/troubleshooting.md) -- Common errors and fixes
 
 ## Testing
 
@@ -597,7 +670,19 @@ jac-browser/
     walkers.jac            # 145 walker definitions
     helpers.jac            # Shared helper functions
     nodes.jac              # Graph node types
-  examples/                # 25 example applications
+  docs/                    # Documentation
+    getting-started.md     # Installation and first program
+    tutorials.md           # Step-by-step guides
+    jac-syntax-guide.md    # Jac language tips
+    api-reference.md       # REST API reference
+    architecture.md        # How it works internally
+    troubleshooting.md     # Common errors and fixes
+  examples/                # 30 example applications
+  skills/                  # AI agent skill definitions
+    jac-browser/           # Core browser automation skill
+    dogfood/               # QA testing skill
+    electron/              # Desktop app automation skill
+    slack/                 # Slack automation skill
   tests/
     test_page.html         # HTML fixture for integration tests
   browser_test.jac         # Integration test suite

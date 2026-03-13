@@ -1,6 +1,6 @@
 # jac-browser Examples
 
-25 example applications demonstrating all browser automation capabilities.
+31 example applications demonstrating all browser automation capabilities.
 
 ## Prerequisites
 
@@ -38,6 +38,12 @@ playwright install chromium
 | 23 | `23_advanced_js.jac` | eval_handle, expose, wait functions | evaluate, eval_handle, expose, pause_page, wait_for, wait_for_url, wait_for_function |
 | 24 | `24_profiler_screencast.jac` | Performance profiling and screen capture | profiler_start, profiler_stop, screencast_start, screencast_stop, response_body |
 | 25 | `25_rest_api_server.jac` | Use jac-browser as a REST API | All walkers via `jac serve` |
+| 26 | `26_headed_mode.jac` | Visible browser for debugging/demos | launch (headless=False), evaluate (setTimeout) |
+| 27 | `27_session_persistence.jac` | Save/load login state across runs | state_save, state_load, cookies_get |
+| 28 | `28_real_world_scraper.jac` | Multi-page scraping with pagination | evaluate, click, wait_for_load_state |
+| 29 | `29_multi_step_form.jac` | Multi-step form wizard with validation | set_content, fill, check_element, select_option, click |
+| 30 | `30_visual_regression.jac` | Baseline + mutation + diff detection | snapshot, screenshot, evaluate, diff_snapshot, diff_screenshot |
+| 31 | `31_composite_walkers.jac` | Multi-step composite walkers | login, fill_form, scrape, paginate, smart_click, crawl, retry, observe |
 
 ## Running Examples
 
@@ -52,9 +58,11 @@ jac serve examples/25_rest_api_server.jac
 
 ## Walker Coverage
 
-These 25 examples collectively demonstrate all 145 walkers across every category:
+These 31 examples collectively demonstrate all 153 walkers (145 primitive + 8 composite) across every category:
 core navigation, form interaction, content extraction, screenshots/PDF, tabs,
 keyboard/mouse, network interception, state management, semantic locators,
 device emulation, dialogs, file I/O, iframes, tracing, visual diff, console
 monitoring, auth vault, script injection, advanced elements, AI agent patterns,
-page configuration, clipboard/touch, advanced JS, profiling, and REST API usage.
+page configuration, clipboard/touch, advanced JS, profiling, REST API usage,
+headed mode, session persistence, real-world scraping, multi-step forms, and
+visual regression testing.
